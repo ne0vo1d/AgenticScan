@@ -1,0 +1,43 @@
+{
+  "name": "agenticscan",
+  "version": "0.1.0",
+  "description": "Orchestrator-agnostic security scanner for agentic workloads implementing OWASP ASI01-ASI10",
+  "type": "module",
+  "author": "Steve Bowpitt <ne0vo1d>",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ne0vo1d/AgenticScan.git"
+  },
+  "keywords": [
+    "owasp",
+    "security",
+    "agent",
+    "agentic",
+    "scanner",
+    "asi"
+  ],
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "bin": {
+    "agenticscan": "./dist/cli/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "scan": "node dist/cli/index.js",
+    "lint": "tsc --noEmit",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "commander": "^12.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "typescript": "^5.5.0",
+    "vitest": "^2.0.0"
+  }
+}

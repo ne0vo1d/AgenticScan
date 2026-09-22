@@ -1,0 +1,114 @@
+{
+  "metadata": {
+    "name": "SecureAgent",
+    "version": "1.0.0",
+    "description": "A secure agent implementing OWASP ASI best practices",
+    "framework": "custom"
+  },
+  "goals": [
+    {
+      "id": "goal-1",
+      "description": "Process validated user requests within defined scope",
+      "user_controlled": true,
+      "validation": "schema-based validation with allowlist"
+    },
+    {
+      "id": "goal-2",
+      "description": "Perform automated data analysis on approved datasets",
+      "user_controlled": false
+    }
+  ],
+  "tools": [
+    {
+      "id": "tool-1",
+      "name": "read_file",
+      "description": "Read from approved file paths",
+      "side_effects": false,
+      "scopes": ["read:files"],
+      "requires_approval": false
+    },
+    {
+      "id": "tool-2",
+      "name": "analyze_data",
+      "description": "Analyze structured data",
+      "side_effects": false,
+      "scopes": ["read:data"],
+      "requires_approval": false
+    },
+    {
+      "id": "tool-3",
+      "name": "write_report",
+      "description": "Write analysis report to designated output path",
+      "side_effects": true,
+      "scopes": ["write:reports"],
+      "requires_approval": true,
+      "file_system_access": true
+    }
+  ],
+  "memory": {
+    "type": "persistent",
+    "trusted_sources_only": true,
+    "validation": "strict schema validation",
+    "sanitization": true
+  },
+  "peers": [
+    {
+      "id": "peer-1",
+      "name": "trusted-analytics-service",
+      "trust_level": "trusted",
+      "authentication_required": true,
+      "communication_encrypted": true
+    }
+  ],
+  "auth": {
+    "method": "mTLS",
+    "credential_storage": "secret_manager",
+    "least_privilege": true
+  },
+  "autonomy": {
+    "level": "semi-autonomous",
+    "max_iterations": 10,
+    "timeout_seconds": 300,
+    "circuit_breaker": true,
+    "rollback_capability": true
+  },
+  "supply_chain": {
+    "dependencies": [
+      {
+        "name": "trusted-lib",
+        "version": "2.3.1",
+        "type": "library",
+        "source": "https://registry.npmjs.org/trusted-lib",
+        "hash": "sha256:a1b2c3d4e5f6..."
+      }
+    ],
+    "pinned": true,
+    "integrity_checks": true
+  },
+  "human_gates": [
+    {
+      "stage": "before-side-effects",
+      "required": true,
+      "description": "Human approval required before executing any side-effecting operation"
+    },
+    {
+      "stage": "final-output",
+      "required": true,
+      "description": "Human review required before delivering final results"
+    }
+  ],
+  "content_sources": [
+    {
+      "id": "source-1",
+      "type": "user_input",
+      "trusted": true,
+      "validation": "strict schema validation with sanitization"
+    },
+    {
+      "id": "source-2",
+      "type": "database",
+      "trusted": true,
+      "validation": "parameterized queries only"
+    }
+  ]
+}
