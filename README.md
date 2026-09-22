@@ -181,6 +181,43 @@ Human-readable report with emoji indicators and remediation guidance.
 - Unpinned dependencies (ASI04)
 - Code execution tools without approval (ASI05)
 
+## CI/CD Integration
+
+AgenticScan includes a GitHub Action workflow that demonstrates best practices for agent security scanning in CI pipelines.
+
+### GitHub Actions Workflow
+
+The included workflow (`.github/workflows/agenticscan.yml`) provides:
+
+1. **Test Job**: Runs the full test suite to validate scanner functionality
+2. **Scan Secure Agent**: Gates CI by scanning a secure fixture (must exit 0)
+3. **Scan Vulnerable Agent**: Smoke test proving the scanner detects issues (expects exit 1)
+
+**CI Behavior:**
+- ✅ Tests pass → Secure agent scan passes → CI succeeds
+- ❌ High/critical findings in your agent → Scanner exits 1 → CI fails
+- 📊 SARIF and Markdown reports uploaded as artifacts
+
+### Example Integration
+
+Add to your repository's workflow:
+
+```yaml
+- name: Security Scan with AgenticScan
+  run: |
+    npm install -g agenticscan
+    agenticscan scan --manifest your-agent.json --format sarif -o results.sarif
+  
+- name: Upload SARIF results
+  uses: actions/upload-artifact@v4
+  if: always()
+  with:
+    name: agenticscan-results
+    path: results.sarif
+```
+
+The scanner will **fail your CI pipeline** if it detects high or critical security issues, preventing vulnerable agents from being deployed.
+
 ## Development
 
 ### Prerequisites
