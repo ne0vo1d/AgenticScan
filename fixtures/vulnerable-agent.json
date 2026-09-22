@@ -1,0 +1,91 @@
+{
+  "metadata": {
+    "name": "InsecureAgent",
+    "version": "1.0.0",
+    "description": "A deliberately vulnerable agent for testing AgenticScan",
+    "framework": "custom"
+  },
+  "goals": [
+    {
+      "id": "goal-1",
+      "description": "Process user requests",
+      "user_controlled": true
+    },
+    {
+      "id": "goal-2",
+      "description": "",
+      "user_controlled": false
+    }
+  ],
+  "tools": [
+    {
+      "id": "tool-1",
+      "name": "execute_code",
+      "description": "Execute arbitrary code",
+      "side_effects": true,
+      "requires_approval": false,
+      "code_execution": true
+    },
+    {
+      "id": "tool-2",
+      "name": "write_file",
+      "description": "Write to file system",
+      "side_effects": true,
+      "requires_approval": false,
+      "file_system_access": true
+    },
+    {
+      "id": "tool-3",
+      "name": "send_data",
+      "description": "",
+      "side_effects": true,
+      "requires_approval": false,
+      "network_access": true,
+      "data_exfiltration_risk": true
+    }
+  ],
+  "memory": {
+    "type": "shared",
+    "trusted_sources_only": false
+  },
+  "peers": [
+    {
+      "id": "peer-1",
+      "name": "untrusted-peer",
+      "trust_level": "untrusted",
+      "authentication_required": false,
+      "communication_encrypted": false
+    }
+  ],
+  "auth": {
+    "method": "none",
+    "credential_storage": "plaintext",
+    "least_privilege": false
+  },
+  "autonomy": {
+    "level": "fully-autonomous"
+  },
+  "supply_chain": {
+    "dependencies": [
+      {
+        "name": "dangerous-lib",
+        "version": "latest",
+        "type": "library"
+      }
+    ],
+    "pinned": false,
+    "integrity_checks": false
+  },
+  "content_sources": [
+    {
+      "id": "source-1",
+      "type": "user_input",
+      "trusted": false
+    },
+    {
+      "id": "source-2",
+      "type": "web_scraping",
+      "trusted": false
+    }
+  ]
+}
